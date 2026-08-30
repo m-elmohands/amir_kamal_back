@@ -26,7 +26,7 @@ paths:
             in: query,
             schema: { type: string, enum: [name, -name, newest] },
           }
-      responses: { "200": { description: Paginated product list } }
+      responses: { "200": { description: Paginated product list including availability status, stock quantity, minimum order quantity, lead time, and quote eligibility } }
   /products/{slug}:
     get:
       summary: Get an active product
@@ -64,6 +64,9 @@ paths:
                           company: { type: string },
                           email: { type: string, format: email },
                           phone: { type: string },
+                          requested_quantity: { type: integer, minimum: 1 },
+                          machine_model: { type: string },
+                          material: { type: string },
                           subject: { type: string },
                           message: { type: string },
                         },

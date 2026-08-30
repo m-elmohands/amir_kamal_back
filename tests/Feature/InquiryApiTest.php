@@ -12,9 +12,9 @@ class InquiryApiTest extends TestCase
 
     public function test_visitor_can_submit_an_inquiry(): void
     {
-        $payload = ['name' => 'Ahmed Saleh', 'email' => 'ahmed@example.com', 'subject' => 'Tooling advice', 'message' => 'I need help choosing a boring bar.'];
+        $payload = ['name' => 'Ahmed Saleh', 'email' => 'ahmed@example.com', 'subject' => 'Tooling advice', 'message' => 'I need help choosing a boring bar.', 'requested_quantity' => 12, 'machine_model' => 'Haas ST-20', 'material' => '4140 steel'];
         $this->postJson('/api/v1/inquiries', $payload)->assertCreated()->assertJsonPath('message', 'Your inquiry has been received. Our team will contact you shortly.');
-        $this->assertDatabaseHas(Inquiry::class, ['email' => 'ahmed@example.com', 'status' => 'new']);
+        $this->assertDatabaseHas(Inquiry::class, ['email' => 'ahmed@example.com', 'status' => 'new', 'requested_quantity' => 12, 'machine_model' => 'Haas ST-20', 'material' => '4140 steel']);
     }
 
     public function test_inquiry_validation_uses_json_errors(): void

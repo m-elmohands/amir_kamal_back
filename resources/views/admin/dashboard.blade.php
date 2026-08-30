@@ -7,10 +7,19 @@
         @foreach ($stats as $label => $value)
             <article class="card stat">
                 <span class="muted">{{ __(str($label)->replace('_', ' ')->title()->toString()) }}</span>
-                <strong>{{ number_format($value) }}</strong>
+                <strong>{{ number_format($value) }}{{ $label === 'conversion_rate' ? '%' : '' }}</strong>
             </article>
         @endforeach
     </div>
+
+    <section class="attention-grid mt-4" aria-labelledby="attention-title">
+        <div class="section-heading"><span class="eyebrow">{{ __('Action center') }}</span><h2 id="attention-title">{{ __('Needs attention') }}</h2></div>
+        @foreach ($attention as $label => $value)
+            <a class="attention-card" href="{{ $label === 'follow_ups_due' ? route('admin.inquiries.index') : route('admin.products.index') }}">
+                <span>{{ __(str($label)->replace('_', ' ')->title()->toString()) }}</span><strong>{{ number_format($value) }}</strong>
+            </a>
+        @endforeach
+    </section>
 
     <section class="card table-card dashboard-table-card p-0 mt-4">
         <div class="table-section-header">

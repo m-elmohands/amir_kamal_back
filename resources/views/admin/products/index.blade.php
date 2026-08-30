@@ -6,8 +6,8 @@
 <section class="card table-card datatable-card p-0">
     <table id="products-table" class="table admin-table admin-datatable align-middle mb-0"
            data-url="{{ route('admin.products.data') }}" data-error-target="products-table-error"
-           data-column-names="name,sku,category_name,is_active,actions">
-        <thead><tr><th>{{ __('Product') }}</th><th>{{ __('SKU') }}</th><th>{{ __('Category') }}</th><th>{{ __('Status') }}</th><th>{{ __('Actions') }}</th></tr></thead>
+           data-column-names="name,sku,category_name,availability_status,is_active,actions">
+        <thead><tr><th>{{ __('Product') }}</th><th>{{ __('SKU') }}</th><th>{{ __('Category') }}</th><th>{{ __('Availability') }}</th><th>{{ __('Visibility') }}</th><th>{{ __('Actions') }}</th></tr></thead>
     </table>
 </section>
 @endsection

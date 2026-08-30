@@ -61,6 +61,26 @@
             <label class="form-label">{{ __('Image URL') }}</label>
             <input class="form-control" type="url" name="image_url" value="{{ old('image_url', $product->image_url) }}">
         </div>
+        <div class="col-12 col-md-6">
+            <label class="form-label" for="availability-status">{{ __('Availability') }}</label>
+            <select class="form-select" id="availability-status" name="availability_status" required>
+                @foreach (['in_stock', 'low_stock', 'made_to_order', 'out_of_stock'] as $status)
+                    <option value="{{ $status }}" @selected(old('availability_status', $product->availability_status ?? 'in_stock') === $status)>{{ __(str($status)->replace('_', ' ')->title()->toString()) }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="col-12 col-md-6">
+            <label class="form-label" for="stock-quantity">{{ __('Stock quantity') }}</label>
+            <input class="form-control" id="stock-quantity" type="number" min="0" name="stock_quantity" value="{{ old('stock_quantity', $product->stock_quantity) }}">
+        </div>
+        <div class="col-12 col-md-6">
+            <label class="form-label" for="minimum-order-quantity">{{ __('Minimum order quantity') }}</label>
+            <input class="form-control" id="minimum-order-quantity" type="number" min="1" name="minimum_order_quantity" value="{{ old('minimum_order_quantity', $product->minimum_order_quantity ?? 1) }}" required>
+        </div>
+        <div class="col-12 col-md-6">
+            <label class="form-label" for="lead-time-days">{{ __('Lead time (days)') }}</label>
+            <input class="form-control" id="lead-time-days" type="number" min="0" name="lead_time_days" value="{{ old('lead_time_days', $product->lead_time_days) }}">
+        </div>
         <div class="col-12 d-flex flex-wrap gap-4">
             <div class="form-check form-switch">
                 <input class="form-check-input" id="product-featured" type="checkbox" name="is_featured" value="1" @checked(old('is_featured', $product->is_featured))>

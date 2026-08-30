@@ -27,20 +27,20 @@
 
             <nav class="admin-nav" aria-label="{{ __('Admin navigation') }}">
                 @foreach ([
-                    ['admin.dashboard', __('Overview')],
-                    ['admin.products.index', __('Products')],
-                    ['admin.categories.index', __('Categories')],
-                    ['admin.brands.index', __('Brands')],
-                    ['admin.inquiries.index', __('Inquiries')],
-                    ['admin.settings.edit', __('Settings')],
-                ] as [$route, $label])
+                    ['admin.dashboard', __('Overview'), 'dashboard'],
+                    ['admin.products.index', __('Products'), 'products'],
+                    ['admin.categories.index', __('Categories'), 'categories'],
+                    ['admin.brands.index', __('Brands'), 'brands'],
+                    ['admin.inquiries.index', __('Inquiries'), 'inquiries'],
+                    ['admin.settings.edit', __('Settings'), 'settings'],
+                ] as [$route, $label, $icon])
                     @php
                         $routePattern = str_replace('.index', '.*', $route);
                         $isActive = request()->routeIs($route) || request()->routeIs($routePattern);
                     @endphp
                     <a class="{{ $isActive ? 'active' : '' }}" href="{{ route($route) }}"
                        @if ($isActive) aria-current="page" @endif>
-                        <span class="nav-icon" aria-hidden="true">{{ mb_substr($label, 0, 1) }}</span>
+                        <span class="nav-icon"><x-admin.icon :name="$icon" /></span>
                         {{ $label }}
                     </a>
                 @endforeach
@@ -60,7 +60,7 @@
         <div class="admin-main">
             <header class="admin-topbar">
                 <button class="mobile-nav-toggle icon-button" type="button" data-sidebar-toggle
-                        aria-label="{{ __('Open navigation') }}" aria-expanded="false">☰</button>
+                        aria-label="{{ __('Open navigation') }}" aria-expanded="false"><x-admin.icon name="menu" /></button>
                 <div>
                     <p class="breadcrumb">{{ __('Workspace') }} / @yield('title')</p>
                     <h1>@yield('title')</h1>
@@ -82,7 +82,7 @@
 
             <main class="content">
                 @if (session('success'))
-                    <div class="toast success" role="status">✓ {{ session('success') }}</div>
+                    <div class="toast success" role="status">{{ session('success') }}</div>
                 @endif
 
                 @if ($errors->any())

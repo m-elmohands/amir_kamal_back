@@ -70,9 +70,9 @@ class DatabaseSeeder extends Seeder
         });
 
         $products = [
-            ['en' => 'Precision 3-Jaw Lathe Chuck', 'ar' => 'ظرف مخرطة دقيق ثلاثي الفكوك', 'sku' => 'WH-3J-200', 'category' => 'Workholding', 'brand' => 'Vertex'],
-            ['en' => 'Modular Boring Bar Set', 'ar' => 'طقم قضبان تجويف معياري', 'sku' => 'LT-MB-12', 'category' => 'Lathe Tooling', 'brand' => 'Sandvik'],
-            ['en' => 'Digital Outside Micrometer', 'ar' => 'ميكرومتر خارجي رقمي', 'sku' => 'MT-DM-025', 'category' => 'Measuring', 'brand' => 'Mitutoyo'],
+            ['en' => 'Precision 3-Jaw Lathe Chuck', 'ar' => 'ظرف مخرطة دقيق ثلاثي الفكوك', 'sku' => 'WH-3J-200', 'category' => 'Workholding', 'brand' => 'Vertex', 'availability' => 'in_stock', 'stock' => 18, 'lead_time' => null],
+            ['en' => 'Modular Boring Bar Set', 'ar' => 'طقم قضبان تجويف معياري', 'sku' => 'LT-MB-12', 'category' => 'Lathe Tooling', 'brand' => 'Sandvik', 'availability' => 'made_to_order', 'stock' => null, 'lead_time' => 14],
+            ['en' => 'Digital Outside Micrometer', 'ar' => 'ميكرومتر خارجي رقمي', 'sku' => 'MT-DM-025', 'category' => 'Measuring', 'brand' => 'Mitutoyo', 'availability' => 'low_stock', 'stock' => 4, 'lead_time' => null],
         ];
 
         foreach ($products as $data) {
@@ -81,6 +81,10 @@ class DatabaseSeeder extends Seeder
                 'slug' => str($data['en'])->slug(),
                 'category_id' => $categories[$data['category']]->id,
                 'brand_id' => $brands[$data['brand']]->id,
+                'availability_status' => $data['availability'],
+                'stock_quantity' => $data['stock'],
+                'minimum_order_quantity' => 1,
+                'lead_time_days' => $data['lead_time'],
                 'is_featured' => true,
                 'is_active' => true,
                 'en' => ['name' => $data['en'], 'summary' => "Production-ready {$data['en']} for demanding shop-floor applications.", 'description' => 'Selected for dependable performance, repeatable accuracy, and long service life in professional machining environments.', 'specifications' => ['Material' => 'Hardened steel', 'Application' => 'CNC and manual machining']],

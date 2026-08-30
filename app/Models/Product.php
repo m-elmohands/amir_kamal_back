@@ -16,11 +16,11 @@ class Product extends Model implements TranslatableContract
 
     public array $translatedAttributes = ['name', 'summary', 'description', 'specifications'];
 
-    protected $fillable = ['category_id', 'brand_id', 'slug', 'sku', 'image_url', 'is_featured', 'is_active'];
+    protected $fillable = ['category_id', 'brand_id', 'slug', 'sku', 'image_url', 'availability_status', 'stock_quantity', 'minimum_order_quantity', 'lead_time_days', 'is_featured', 'is_active'];
 
     protected function casts(): array
     {
-        return ['is_featured' => 'boolean', 'is_active' => 'boolean'];
+        return ['stock_quantity' => 'integer', 'minimum_order_quantity' => 'integer', 'lead_time_days' => 'integer', 'is_featured' => 'boolean', 'is_active' => 'boolean'];
     }
 
     public function category(): BelongsTo
@@ -41,5 +41,10 @@ class Product extends Model implements TranslatableContract
     public function scopeSearch(Builder $query, ?string $search): Builder
     {
         return $query->when($search, fn (Builder $q) => $q->where('sku', 'like', "%{$search}%")->orWhereTranslationLike('name', "%{$search}%")->orWhereTranslationLike('summary', "%{$search}%"));
+    }
+
+    public function scopeAvailable(Builder $query): Builder
+    {
+        return $query->whereIn('availability_status', ['in_stock', 'low_stock', 'made_to_order']);
     }
 }

@@ -20,7 +20,7 @@ class CatalogApiTest extends TestCase
     public function test_product_can_be_retrieved_by_slug(): void
     {
         $product = Product::factory()->create();
-        $this->getJson('/api/v1/products/'.$product->slug)->assertOk()->assertJsonPath('data.sku', $product->sku);
+        $this->getJson('/api/v1/products/'.$product->slug)->assertOk()->assertJsonPath('data.sku', $product->sku)->assertJsonPath('data.availability.status', 'in_stock')->assertJsonPath('data.availability.can_request_quote', true);
     }
 
     public function test_catalog_uses_the_requested_arabic_translation(): void

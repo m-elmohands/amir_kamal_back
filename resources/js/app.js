@@ -27,11 +27,13 @@ const languages = {
 };
 
 document.querySelectorAll('.admin-datatable').forEach((table) => {
+    const nonOrderable = new Set((table.dataset.nonOrderable ?? '').split(',').filter(Boolean));
+    const nonSearchable = new Set((table.dataset.nonSearchable ?? '').split(',').filter(Boolean));
     const columns = table.dataset.columnNames.split(',').map((data, index, all) => ({
         data,
         name: data,
-        orderable: index !== all.length - 1,
-        searchable: index !== all.length - 1,
+        orderable: index !== all.length - 1 && !nonOrderable.has(data),
+        searchable: index !== all.length - 1 && !nonSearchable.has(data),
     }));
 
     new DataTable(table, {
@@ -100,7 +102,20 @@ document.addEventListener('click', async (event) => {
 
     if (inquiryStatusTrigger && inquiryStatusModal) {
         inquiryStatusModalElement.querySelector('[data-inquiry-status-form]').action = inquiryStatusTrigger.dataset.inquiryStatusAction;
-        inquiryStatusModalElement.querySelector('[name="status"]').value = inquiryStatusTrigger.dataset.inquiryStatus;
+        const inquiry = JSON.parse(inquiryStatusTrigger.dataset.inquiry);
+
+        Object.entries(inquiry).forEach(([name, value]) => {
+            const field = inquiryStatusModalElement.querySelector(`[name="${name}"]`);
+            const display = inquiryStatusModalElement.querySelector(`[data-inquiry-value="${name}"]`);
+
+            if (field) {
+                field.value = value ?? '';
+            }
+
+            if (display) {
+                display.textContent = value || '—';
+            }
+        });
         inquiryStatusModal.show();
     }
 
