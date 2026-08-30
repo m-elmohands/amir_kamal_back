@@ -1,0 +1,78 @@
+openapi: 3.1.0
+info: { title: Axis Industrial Catalog API, version: 1.0.0 }
+servers: [{ url: http://localhost:8000/api/v1 }]
+paths:
+  /settings:
+    get:
+      summary: Get localized public website settings
+      parameters:
+        - {
+            name: locale,
+            in: query,
+            schema: { type: string, enum: [en, ar], default: en },
+          }
+      responses:
+        "200":
+          description: Site identity with uploaded logo and favicon URLs, contact details, social links, SEO, and maintenance status
+  /products:
+    get:
+      summary: Search and filter active products
+      parameters:
+        - { name: search, in: query, schema: { type: string } }
+        - { name: category, in: query, schema: { type: string } }
+        - { name: brand, in: query, schema: { type: string } }
+        - {
+            name: sort,
+            in: query,
+            schema: { type: string, enum: [name, -name, newest] },
+          }
+      responses: { "200": { description: Paginated product list } }
+  /products/{slug}:
+    get:
+      summary: Get an active product
+      parameters:
+        [{ name: slug, in: path, required: true, schema: { type: string } }]
+      responses:
+        {
+          "200": { description: Product detail },
+          "404": { description: Not found },
+        }
+  /catalog/filters:
+    get:
+      {
+        summary: Get active categories and brands,
+        responses: { "200": { description: Catalog filters } },
+      }
+  /inquiries:
+    post:
+      summary: Submit a contact or quote inquiry
+      requestBody:
+        {
+          required: true,
+          content:
+            {
+              application/json:
+                {
+                  schema:
+                    {
+                      type: object,
+                      required: [name, email, subject, message],
+                      properties:
+                        {
+                          product_id: { type: integer },
+                          name: { type: string },
+                          company: { type: string },
+                          email: { type: string, format: email },
+                          phone: { type: string },
+                          subject: { type: string },
+                          message: { type: string },
+                        },
+                    },
+                },
+            },
+        }
+      responses:
+        {
+          "201": { description: Inquiry accepted },
+          "422": { description: Validation error },
+        }
